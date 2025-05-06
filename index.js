@@ -13,21 +13,22 @@ const DELIVERY_TOKEN = 'y0__xDo45fPBxix9Bwg2_D0_BKow1CwQZChNL6oykMqXxFB0ttDKw';
 const YANDEX_GEOCODER_API_KEY = 'f408c86b-7d85-41af-a766-fa147dcc6e7c';
 
 // Геокодирование через Яндекс.Карты
-async function getCoordinates(address) {
-  const url = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${YANDEX_GEOCODER_API_KEY}&geocode=${encodeURIComponent(address)}`;
 
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
+//  async function getCoordinates(address) {
+  //const url = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${YANDEX_GEOCODER_API_KEY}&geocode=${encodeURIComponent(address)}`;
 
-    const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-    const [lat, lon] = pos.split(' ').map(Number);
-    return [lat, lon];
-  } catch (e) {
-    console.error('Ошибка геокодирования:', e);
-    return null;
-  }
-}
+  //try {
+    //const res = await fetch(url);
+    //const data = await res.json();
+
+    //const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+    //const [lat, lon] = pos.split(' ').map(Number);
+    //return [lat, lon];
+  //} catch (e) {
+    //console.error('Ошибка геокодирования:', e);
+    //return null;
+  //}
+//}
 
 app.post('/calculate', async (req, res) => {
   try {
