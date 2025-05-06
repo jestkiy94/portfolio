@@ -49,4 +49,35 @@ app.post('/calculate', async (req, res) => {
     const yandexResponse = await fetch('https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/check-price', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DELIVERY_TOKEN}`,
+        'Accept-Language': 'ru'  // Добавляем заголовок для языка
+      },
+      body: JSON.stringify(body)
+    });
+
+    const result = await yandexResponse.json();
+
+    if (!yandexResponse.ok) {
+      console.error('Ошибка от Яндекс.Доставки:', result);
+      return res.status(yandexResponse.status).json({
+        error: 'Ошибка от Яндекс.Доставки',
+        details: result
+      });
+    }
+
+    res.json({
+      price: result.price?.amount || null,
+      currency: result.price?.currency || 'RUB',
+      delivery_time: result.delivery?.delivery_interval || null
+    });
+
+  } catch (error) {
+    console.error('Ошибка на сервере:', error);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера', details: error.message });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
