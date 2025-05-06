@@ -1,21 +1,4 @@
 {
-  "source": {
-    "geo_id": 2,
-    "address": "Каменноостровский проспект, 43Б"
-  },
-  "destination": {
-    "address": "Невский проспект, 100"
-  },
-  "packages": [
-    {
-      "weight": 1.0,
-      "length": 30,
-      "width": 25,
-      "height": 40
-    }
-  ]
-}
-{
   "name": "yandex-delivery",
   "version": "1.0.0",
   "description": "",
@@ -23,12 +6,12 @@
   "scripts": {
     "start": "node index.js"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.1",
     "cors": "^2.8.5"
   }
-}
-"engines": {
-  "node": "16.x"
 }
