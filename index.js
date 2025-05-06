@@ -35,16 +35,16 @@ app.post('/calculate', async (req, res) => {
     const body = req.body;
 
     // Геокодируем точки маршрута, если координаты не переданы
-    for (let i = 0; i < body.route_points.length; i++) {
-      const point = body.route_points[i];
-      if (!point.coordinates && point.address) {
-        const coords = await getCoordinates(point.address);
-        if (!coords) {
-          return res.status(400).json({ error: `Не удалось определить координаты для адреса: ${point.address}` });
-        }
-        point.coordinates = coords;
-      }
-    }
+//    for (let i = 0; i < body.route_points.length; i++) {
+    //  const point = body.route_points[i];
+    //  if (!point.coordinates && point.address) {
+     //   const coords = await getCoordinates(point.address);
+     //   if (!coords) {
+      //    return res.status(400).json({ error: `Не удалось определить координаты для адреса: ${point.address}` });
+     //   }
+       // point.coordinates = coords;
+     // }
+    //}
 
     // Запрос к Яндекс.Доставке с добавленным заголовком Accept-Language
     const yandexResponse = await fetch('https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/check-price', {
