@@ -1,13 +1,17 @@
 {
-  "name": "yandex-delivery-proxy",
-  "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "node-fetch": "^2.6.1"
+  "source": {
+    "geo_id": 2,
+    "address": "Каменноостровский проспект, 43Б"
   },
-  "scripts": {
-    "start": "node index.js"
-  }
+  "destination": {
+    "address": "Невский проспект, 100"
+  },
+  "packages": [
+    {
+      "weight": 1.0,
+      "length": 30,
+      "width": 25,
+      "height": 40
+    }
+  ]
 }
