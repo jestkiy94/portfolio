@@ -14,37 +14,37 @@ const YANDEX_GEOCODER_API_KEY = 'f408c86b-7d85-41af-a766-fa147dcc6e7c';
 
 // Геокодирование через Яндекс.Карты
 
-//  async function getCoordinates(address) {
-  //const url = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${YANDEX_GEOCODER_API_KEY}&geocode=${encodeURIComponent(address)}`;
+  async function getCoordinates(address) {
+  const url = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${YANDEX_GEOCODER_API_KEY}&geocode=${encodeURIComponent(address)}`;
 
-  //try {
-    //const res = await fetch(url);
-    //const data = await res.json();
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
 
-    //const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-    //const [lat, lon] = pos.split(' ').map(Number);
-    //return [lat, lon];
-  //} catch (e) {
-    //console.error('Ошибка геокодирования:', e);
-    //return null;
-  //}
-//}
+    const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
+    const [lat, lon] = pos.split(' ').map(Number);
+    return [lon, lat];
+  } catch (e) {
+    console.error('Ошибка геокодирования:', e);
+    return null;
+  }
+}
 
 app.post('/calculate', async (req, res) => {
   try {
     const body = req.body;
 
     // Геокодируем точки маршрута, если координаты не переданы
-//    for (let i = 0; i < body.route_points.length; i++) {
-    //  const point = body.route_points[i];
-    //  if (!point.coordinates && point.address) {
-     //   const coords = await getCoordinates(point.address);
-     //   if (!coords) {
-      //    return res.status(400).json({ error: `Не удалось определить координаты для адреса: ${point.address}` });
-     //   }
-       // point.coordinates = coords;
-     // }
-    //}
+    for (let i = 0; i < body.route_points.length; i++) {
+      const point = body.route_points[i];
+      if (!point.coordinates && point.address) {
+        const coords = await getCoordinates(point.address);
+        if (!coords) {
+          return res.status(400).json({ error: `Не удалось определить координаты для адреса: ${point.address}` });
+        }
+        point.coordinates = coords;
+      }
+    }
 
     // Запрос к Яндекс.Доставке с добавленным заголовком Accept-Language
     const yandexResponse = await fetch('https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/check-price', {
