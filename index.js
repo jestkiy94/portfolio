@@ -34,7 +34,7 @@ async function geocodeAddress(address) {
   }
 }
 
-geocodeAddress("Серебристый 24. к2 . кв 636"); // Пример вашего адреса
+geocodeAddress("г. Санкт-Петербург, Серебристый бульвар, 24, к2, кв 636"); // Пример вашего адреса
 
 // Геокодирование через Яндекс.Карты
 async function getCoordinates(address) {
