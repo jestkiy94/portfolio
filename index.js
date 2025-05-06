@@ -12,14 +12,14 @@ app.use(express.json());
 // Эндпоинт для расчета доставки
 app.post('/calculate', async (req, res) => {
   try {
-    const response = await fetch('https://delivery.yandex.ru/api/delivery-calculator', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer y0__xDo45fPBxix9Bwg2_D0_BKow1CwQZChNL6oykMqXxFB0ttDKw'
-      },
-      body: JSON.stringify(req.body)
-    });
+    const response = await fetch('https://api.delivery.yandex.ru/v1/delivery-calculator', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer y0__xDo45fPBxix9Bwg2_D0_BKow1CwQZChNL6oykMqXxFB0ttDKw'
+  },
+  body: JSON.stringify(req.body)
+});
 
     const data = await response.json();
 
