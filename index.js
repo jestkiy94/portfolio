@@ -30,8 +30,6 @@ async function getCoordinates(address) {
 }
 
 app.post('/calculate', async (req, res) => {
-  console.log('Запрос на расчет:', req.body);  // Логируем запрос, чтобы проверить приходящие данные
-
   try {
     const body = req.body;
 
@@ -40,7 +38,6 @@ app.post('/calculate', async (req, res) => {
       const point = body.route_points[i];
       if (!point.coordinates && point.address) {
         const coords = await getCoordinates(point.address);
-        console.log(`Геокодируем адрес: ${point.address}, полученные координаты:`, coords); // Логируем полученные координаты
         if (!coords) {
           return res.status(400).json({ error: `Не удалось определить координаты для адреса: ${point.address}` });
         }
@@ -48,39 +45,8 @@ app.post('/calculate', async (req, res) => {
       }
     }
 
-    // Запрос к Яндекс.Доставке
+    // Запрос к Яндекс.Доставке с добавленным заголовком Accept-Language
     const yandexResponse = await fetch('https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/check-price', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DELIVERY_TOKEN}`
-      },
-      body: JSON.stringify(body)
-    });
-
-    const result = await yandexResponse.json();
-    console.log('Ответ от Яндекс.Доставки:', result);  // Логируем результат от Яндекс.Доставки
-
-    if (!yandexResponse.ok) {
-      console.error('Ошибка от Яндекс.Доставки:', result);
-      return res.status(yandexResponse.status).json({
-        error: 'Ошибка от Яндекс.Доставки',
-        details: result
-      });
-    }
-
-    res.json({
-      price: result.price?.amount || null,
-      currency: result.price?.currency || 'RUB',
-      delivery_time: result.delivery?.delivery_interval || null
-    });
-
-  } catch (error) {
-    console.error('Ошибка на сервере:', error);
-    res.status(500).json({ error: 'Внутренняя ошибка сервера', details: error.message });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+        'Content-Type': 'application/json
