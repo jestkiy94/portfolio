@@ -30,6 +30,8 @@ async function getCoordinates(address) {
 }
 
 app.post('/calculate', async (req, res) => {
+  console.log('Запрос на расчет:', req.body);  // Логируем запрос, чтобы проверить приходящие данные
+
   try {
     const body = req.body;
 
@@ -38,6 +40,7 @@ app.post('/calculate', async (req, res) => {
       const point = body.route_points[i];
       if (!point.coordinates && point.address) {
         const coords = await getCoordinates(point.address);
+        console.log(`Геокодируем адрес: ${point.address}, полученные координаты:`, coords); // Логируем полученные координаты
         if (!coords) {
           return res.status(400).json({ error: `Не удалось определить координаты для адреса: ${point.address}` });
         }
@@ -45,6 +48,7 @@ app.post('/calculate', async (req, res) => {
       }
     }
 
+    // Запрос к Яндекс.Доставке
     const yandexResponse = await fetch('https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/check-price', {
       method: 'POST',
       headers: {
@@ -55,6 +59,7 @@ app.post('/calculate', async (req, res) => {
     });
 
     const result = await yandexResponse.json();
+    console.log('Ответ от Яндекс.Доставки:', result);  // Логируем результат от Яндекс.Доставки
 
     if (!yandexResponse.ok) {
       console.error('Ошибка от Яндекс.Доставки:', result);
