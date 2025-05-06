@@ -9,10 +9,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors()); // Разрешаем CORS
 app.use(express.json());
 
-// Эндпоинт для расчета доставки
+// Эндпоинт для расчета стоимости доставки
 app.post('/calculate', async (req, res) => {
   try {
-    const response = await fetch('https://api.delivery.yandex.ru/v1/delivery-calculator', {
+    const response = await fetch('https://b2b.taxi.yandex.net/offer/calculate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,6 +28,7 @@ app.post('/calculate', async (req, res) => {
       return res.status(response.status).json({ error: 'Ошибка при обращении к API Яндекс.Доставки', details: data });
     }
 
+    // Возвращаем клиенту только нужные данные
     res.json({
       price: data.price?.value || null,
       currency: data.price?.currency || 'RUB',
