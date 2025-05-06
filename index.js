@@ -13,30 +13,6 @@ const DELIVERY_TOKEN = 'y0__xDo45fPBxix9Bwg2_D0_BKow1CwQZChNL6oykMqXxFB0ttDKw';
 const YANDEX_GEOCODER_API_KEY = 'f408c86b-7d85-41af-a766-fa147dcc6e7c';
 
 // Геокодирование через Яндекс.Карты
-
-async function geocodeAddress(address) {
-  const apiKey = 'f408c86b-7d85-41af-a766-fa147dcc6e7c'; // Ваш ключ
-  const url = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${apiKey}&geocode=${encodeURIComponent(address)}`;
-
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.response.GeoObjectCollection.featureMember.length > 0) {
-      const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-      const [lon, lat] = pos.split(' ').map(Number);
-      console.log('Координаты для адреса:', address, [lon, lat]);
-    } else {
-      console.log('Адрес не найден или некорректен:', address);
-    }
-  } catch (error) {
-    console.error('Ошибка при запросе к геокодеру:', error);
-  }
-}
-
-geocodeAddress("ул. Верхне-Каменская 9к1, кв 2217"); // Пример вашего адреса
-
-// Геокодирование через Яндекс.Карты
 async function getCoordinates(address) {
   const url = `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=${YANDEX_GEOCODER_API_KEY}&geocode=${encodeURIComponent(address)}`;
 
@@ -45,8 +21,8 @@ async function getCoordinates(address) {
     const data = await res.json();
 
     const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-    const [lon, lat] = pos.split(' ').map(Number);
-    return [lon, lat];
+    const [lat, lon] = pos.split(' ').map(Number);
+    return [lat, lon];
   } catch (e) {
     console.error('Ошибка геокодирования:', e);
     return null;
