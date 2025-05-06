@@ -21,7 +21,7 @@ async function getCoordinates(address) {
     const data = await res.json();
 
     const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-    const [lat, lon] = pos.split(' ').map(Number);
+    const [lon, lat] = pos.split(' ').map(Number);
     return [lat, lon];
   } catch (e) {
     console.error('Ошибка геокодирования:', e);
