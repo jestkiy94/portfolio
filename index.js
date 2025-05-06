@@ -14,7 +14,7 @@ app.post('/calculate', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer y0_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' // сюда вставь свой токен
+        'Authorization': 'Bearer y0__xDo45fPBxix9Bwg2_D0_BKow1CwQZChNL6oykMqXxFB0ttDKw' // сюда вставь свой токен
       },
       body: JSON.stringify(req.body)
     });
