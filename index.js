@@ -79,7 +79,6 @@ app.post('/calculate', async (req, res) => {
     res.status(500).json({ error: 'Внутренняя ошибка сервера', details: error.message });
   }
 });
-console.log("Отправляем в Яндекс.Доставку:", JSON.stringify(body, null, 2));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
