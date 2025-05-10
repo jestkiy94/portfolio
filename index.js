@@ -22,7 +22,7 @@ const YANDEX_GEOCODER_API_KEY = 'f408c86b-7d85-41af-a766-fa147dcc6e7c';
     const data = await res.json();
 
     const pos = data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos;
-    const [lat, lon] = pos.split(' ').map(Number);
+    const [lon, lat] = pos.split(' ').map(Number);
     return [lon, lat];
   } catch (e) {
     console.error('Ошибка геокодирования:', e);
