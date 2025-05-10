@@ -67,7 +67,8 @@ app.post('/calculate', async (req, res) => {
       });
     }
 
-    res.json({
+    res.json
+      ({
       price: result.price?.amount || null,
       currency: result.price?.currency || 'RUB',
       delivery_time: result.delivery?.delivery_interval || null
@@ -78,7 +79,7 @@ app.post('/calculate', async (req, res) => {
     res.status(500).json({ error: 'Внутренняя ошибка сервера', details: error.message });
   }
 });
-
+console.log("Отправляем в Яндекс.Доставку:", JSON.stringify(body, null, 2));
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
