@@ -33,6 +33,11 @@ app.post('/calculate', async (req, res) => {
   try {
     const body = req.body;
 
+    console.log('\n📍 Адреса маршрута:');
+    for (const point of body.route_points) {
+      console.log(`- ${point.type.toUpperCase()}: ${point.address}`);
+    }
+
     // Геокодируем точки маршрута, если координаты не переданы
     for (let i = 0; i < body.route_points.length; i++) {
       const point = body.route_points[i];
@@ -45,8 +50,8 @@ app.post('/calculate', async (req, res) => {
       }
     }
 
-    // Список тарифов для перебора
-    const tariffCodes = [express, 42, 43, 47, 138, 157, 158]; // можно расширить список
+    // Список тарифов (включая express — его код 62)
+    const tariffCodes = [62, 42, 43, 47, 138, 157, 158];
 
     for (const tariff_code of tariffCodes) {
       const attemptBody = {
@@ -54,7 +59,7 @@ app.post('/calculate', async (req, res) => {
         tariff_code
       };
 
-      console.log(`Пробуем тариф: ${tariff_code}`);
+      console.log(`\n🚚 Пробуем тариф: ${tariff_code}`);
 
       const yandexResponse = await fetch('https://b2b.taxi.yandex.net/b2b/cargo/integration/v2/check-price', {
         method: 'POST',
@@ -69,6 +74,7 @@ app.post('/calculate', async (req, res) => {
       const result = await yandexResponse.json();
 
       if (yandexResponse.ok && result.price) {
+        console.log(`✅ Найден подходящий тариф: ${tariff_code}`);
         return res.json({
           price: result.price?.amount || null,
           currency: result.price?.currency || 'RUB',
@@ -76,7 +82,7 @@ app.post('/calculate', async (req, res) => {
           used_tariff: tariff_code
         });
       } else {
-        console.warn(`Тариф ${tariff_code} не подошёл:`, result.message || result.code);
+        console.warn(`❌ Тариф ${tariff_code} не подошёл:`, result.message || result.code);
       }
     }
 
@@ -84,11 +90,11 @@ app.post('/calculate', async (req, res) => {
     return res.status(409).json({ error: 'Не удалось подобрать подходящий тариф для этой доставки.' });
 
   } catch (error) {
-    console.error('Ошибка на сервере:', error);
+    console.error('❗ Ошибка на сервере:', error);
     res.status(500).json({ error: 'Внутренняя ошибка сервера', details: error.message });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`\n🚀 Server running on port ${PORT}`);
 });
