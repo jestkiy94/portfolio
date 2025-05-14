@@ -46,7 +46,7 @@ app.post('/calculate', async (req, res) => {
     }
 
     // Список тарифов для перебора
-    const tariffCodes = [42, 43, 47, 138, 157, 158]; // можно расширить список
+    const tariffCodes = [express, 42, 43, 47, 138, 157, 158]; // можно расширить список
 
     for (const tariff_code of tariffCodes) {
       const attemptBody = {
